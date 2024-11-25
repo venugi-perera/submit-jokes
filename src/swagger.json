@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Submit Jokes Service API",
+    "description": "API for managing jokes and joke types.",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3002",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/jokes/types": {
+      "get": {
+        "summary": "Get joke types",
+        "description": "Retrieve a list of distinct joke types.",
+        "responses": {
+          "200": {
+            "description": "A list of joke types",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jokes/random/{selectedType}": {
+      "get": {
+        "summary": "Get jokes by type",
+        "description": "Retrieve jokes based on the selected joke type.",
+        "parameters": [
+          {
+            "name": "selectedType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The type of joke to filter by."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of jokes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Joke"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jokes/random": {
+      "get": {
+        "summary": "Get all jokes",
+        "description": "Retrieve a list of all jokes.",
+        "responses": {
+          "200": {
+            "description": "A list of jokes",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Joke"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jokes": {
+      "post": {
+        "summary": "Create a new joke",
+        "description": "Add a new joke with its content and type.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewJoke"
+            },
+            "description": "The joke to add."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The created joke",
+            "schema": {
+              "$ref": "#/definitions/Joke"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Joke": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "The unique identifier for the joke."
+        },
+        "content": {
+          "type": "string",
+          "description": "The content of the joke."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type/category of the joke."
+        }
+      }
+    },
+    "NewJoke": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "The content of the joke."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type/category of the joke."
+        }
+      },
+      "required": ["content", "type"]
+    }
+  }
+}
